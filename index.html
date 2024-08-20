@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Dev Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-blue-500 h-screen flex justify-center content-center items-center md:bg-blue-700 sm:bg-white">
+    <div class="container mx-auto border border-white shadow-lg space-y-4 rounded-lg p-8 bg-white mt-10 md:bg-white md:text-black sm:bg-blue-700 sm:text-white">
+        <h1 class="text-5xl font-bold p-4 m-4 text-center mb-5">Rock, Paper, Scissors!</h1>
+        <div class="flex justify-center">
+            <button class="bg-blue-500 hover:bg-blue-700 transition-all active:opacity-80 text-white font-bold py-2 px-4 rounded mr-2">Rock</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white active:opacity-80 transition-all font-bold py-2 px-4 rounded mr-2">Paper</button>
+            <button class="bg-blue-500 hover:bg-blue-700 transition-all active:opacity-80 text-white font-bold py-2 px-4 rounded">Scissors</button>
+        </div>
+        <div class="text-center p-8 m-8 mt-5">
+            <h2 class="text-xl font-medium">Result:</h2>
+            <p class="text-3xl font-black" id="result">Make your move!</p>
+        </div>
+
+        <div class="flex justify-center p-4 m-4">
+            <div>
+                <h2 class="text-xl text-center text-red-500 font-bold">Opponent's Choice:</h2>
+                <p class="text-2xl text-center font-bold" id="opponent-choice">Waiting for opponent...</p>
+            </div>
+        </div>
+
+        <div class="flex justify-center">
+            <div>
+                <h2 class="text-xl text-center font-bold">Score:</h2>
+                <p class="text-5xl text-center" id="score">0</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Get the buttons
+        const rockButton = document.querySelector('.bg-blue-500:nth-of-type(1)');
+        const paperButton = document.querySelector('.bg-blue-500:nth-of-type(2)');
+        const scissorsButton = document.querySelector('.bg-blue-500:nth-of-type(3)');
+
+        // Get the result element
+        const resultElement = document.getElementById('result');
+
+        // Get the opponent's choice element
+        const opponentChoiceElement = document.getElementById('opponent-choice');
+
+        // Get the score element
+        const scoreElement = document.getElementById('score');
+
+        // Initialize the score
+        let score = 0;
+
+        // Function to generate a random choice for the opponent
+        function generateOpponentChoice() {
+            const choices = ['Rock', 'Paper', 'Scissors'];
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        // Function to determine the winner
+        function determineWinner(playerChoice, opponentChoice) {
+            if (playerChoice === opponentChoice) {
+                resultElement.className = 'text-4xl font-black text-blue-500';
+                return 'It\'s a tie!';
+            } else if (
+                (playerChoice === 'Rock' && opponentChoice === 'Scissors') ||
+                (playerChoice === 'Paper' && opponentChoice === 'Rock') ||
+                (playerChoice === 'Scissors' && opponentChoice === 'Paper')
+            ) {
+                resultElement.className = 'text-4xl font-black text-green-500';
+                score++;
+                return 'You win!';
+            } else {
+                resultElement.className = 'text-4xl font-black text-red-500';
+                return 'You lose!';
+            }
+        }
+
+        // Function to handle button click
+        function handleClick(event) {
+            const playerChoice = event.target.textContent;
+            const opponentChoice = generateOpponentChoice();
+            const result = determineWinner(playerChoice, opponentChoice);
+
+            resultElement.textContent = result;
+            opponentChoiceElement.textContent = `${opponentChoice}`;
+            scoreElement.textContent = score;
+        }
+
+        // Add event listeners to the buttons
+        rockButton.addEventListener('click', handleClick);
+        paperButton.addEventListener('click', handleClick);
+        scissorsButton.addEventListener('click', handleClick);
+    </script>
+</body>
+</html>
